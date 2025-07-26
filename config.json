@@ -1,0 +1,16 @@
+{
+  "latitude": "0.0",
+  "longitude": "0.0",
+  "units": "imperial",
+  "forecast_temp_threshold": 80,
+  "max_wind": 10,
+  "max_aqi": 100,
+  "min_indoor_temp": 70,
+  "max_outdoor_humidity": 45,
+  "max_desired_indoor_temp": 76,
+  "evening_start_time": "17:00",
+  "evening_end_time": "22:00",
+  "weekday_morning_time": "05:30",
+  "min_temp_diff": 5,
+  "time_zone": "America/Los_Angeles"
+}
