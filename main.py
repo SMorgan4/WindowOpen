@@ -87,8 +87,9 @@ class WindowOpen:
 
 
 def main():
-    checker = WindowOpen
+    checker = WindowOpen()
     checker.run_schedule_loop()
 
 
-
+if __name__ == "__main__":
+    main()
