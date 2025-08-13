@@ -22,3 +22,8 @@ class Source(ABC):
             self.dewpoint = psychrolib.GetTDewPointFromRelHum(self.temperature, self.humidity / 100)
         else:
             self.dewpoint = 0
+
+    @staticmethod
+    #TODO update tests to use metric values for indoor temps
+    def c_to_f(self, temp) -> float:
+        return (temp * 9/5) + 32
