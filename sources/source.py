@@ -27,5 +27,5 @@ class Source(ABC):
 
     @staticmethod
     #TODO update tests to use metric values for indoor temps
-    def c_to_f(self, temp) -> float:
+    def c_to_f(temp) -> float:
         return (temp * 9/5) + 32
