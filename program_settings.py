@@ -1,10 +1,12 @@
 import json
 from os import path
 from datetime import timedelta
+import logging
 
 
 class Settings:
     def __init__(self, setting_file):
+        self.logger = logging.getLogger(__name__)
         self.setting_file = path.join(path.dirname(path.abspath(__file__)), setting_file)
         if path.exists(self.setting_file):
             with open(self.setting_file, "r") as infile:
@@ -29,7 +31,7 @@ class Settings:
                 self.weekday_morning_time = self._string_to_timedelta(setting_data["weekday_morning_time"])
 
         else:
-            print("Error config file not found")
+            self.logger.error("Error config file not found")
 
     @staticmethod
     def _string_to_timedelta(str_time: str) -> timedelta:

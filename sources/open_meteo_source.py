@@ -46,8 +46,8 @@ class OpenMeteo(source.Source):
             self.wind = weather['current']['wind_speed_10m']
             self.daily_high = weather["daily"]["temperature_2m_max"][0]
         else:
-            print("Error fetching weather")
-            print(response.status_code)
+            self.logger.error("Error fetching weather")
+            self.logger.error(response.status_code)
 
     def _get_pollution(self) -> None:
         response = requests.get("https://air-quality-api.open-meteo.com/v1/air-quality?",
@@ -60,5 +60,5 @@ class OpenMeteo(source.Source):
             outdoor_aqi = response.json()
             self.aqi = outdoor_aqi['current']["us_aqi"]
         else:
-            print("Error fetching pollution")
-            print(response.status_code)
+            self.logger.error("Error fetching pollution")
+            self.logger.error(response.status_code)

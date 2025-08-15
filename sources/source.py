@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import psychrolib
+import logging
 
 
 class Source(ABC):
@@ -15,6 +16,7 @@ class Source(ABC):
         self.pressure = 0
         self.dewpoint = 0
         self.daily_high = 0
+        self.logger = logging.getLogger(__name__)
         psychrolib.SetUnitSystem(psychrolib.IP)
 
     def calculate_dewpoint(self) -> None:
