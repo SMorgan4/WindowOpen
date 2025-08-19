@@ -38,7 +38,7 @@ class WindowOpen:
         self.logger.info(str(self.indoor_source))
         self.indoor_source.update()
         self.logger.info("Updated outdoor source:")
-        self.logger.info(str(self.indoor_source))
+        self.logger.info(str(self.weather_source))
 
         if check_mode == "morning":
             if self.weather_source.daily_high < self.settings.forecast_temp_threshold:
