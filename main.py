@@ -45,19 +45,17 @@ class WindowOpen:
                 self.logger.info("Check failed - forecast not hot enough.")
                 return False
         elif check_mode == "evening":
-            if self._reschedule_evening():
-                return False
             if self.indoor_source.temperature <= self.settings.max_desired_indoor_temp:
                 self.logger.info("Check failed - not hot enough inside")
                 return False
         if not self._shared_checks():
+            if check_mode == "evening":
+                self._reschedule_evening()
             return False
         return True
 
     def _reschedule_evening(self) -> bool:
-        """Returns true if we should reschedule, ie, if the temp diff is too small, or we are past the max opening time"""
-        if self.indoor_source.temperature - self.settings.min_temp_diff <= self.weather_source.temperature:
-            return False
+        """Returns true and reschedules if we are within the re-scheduling window"""
         if (datetime.now() > datetime(year=datetime.today().year, month=datetime.today().month, day=datetime.today().day)
                 + self.settings.evening_end_time):
             return False
