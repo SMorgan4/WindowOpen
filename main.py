@@ -60,7 +60,7 @@ class WindowOpen:
                 + self.settings.evening_end_time):
             return False
         self.logger.info("Scheduling additional check")
-        schedule.every(1).hour.do(self.check_and_notify, check_mode="evening", run_once=True)
+        schedule.every(self.settings.retry_interval).minutes.do(self.check_and_notify, check_mode="evening", run_once=True)
         return True
 
     def _shared_checks(self) -> bool:

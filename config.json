@@ -11,6 +11,7 @@
   "evening_start_time": "17:00",
   "evening_end_time": "22:00",
   "weekday_morning_time": "05:30",
+  "retry_interval": 15,
   "min_temp_diff": 5,
   "time_zone": "America/Los_Angeles"
 }

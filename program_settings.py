@@ -29,6 +29,7 @@ class Settings:
                 self.evening_start_time = self._string_to_timedelta(setting_data["evening_start_time"])
                 self.evening_end_time = self._string_to_timedelta(setting_data["evening_end_time"])
                 self.weekday_morning_time = self._string_to_timedelta(setting_data["weekday_morning_time"])
+                self.retry_interval = setting_data["retry_interval"]  # retry interval in minutes
 
         else:
             self.logger.error("Error config file not found")
