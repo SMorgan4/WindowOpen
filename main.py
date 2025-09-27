@@ -6,6 +6,7 @@ from datetime import datetime
 import time
 from notifier import Notifier
 import logging
+from history import write_row
 
 
 class WindowOpen:
@@ -21,6 +22,7 @@ class WindowOpen:
         self._setup_schedule()
         self.notifier = Notifier(self.indoor_source, self.weather_source)
         self.logger.info("Finished setup")
+        self.source_list = [self.indoor_source, self.weather_source]
 
     def check_and_notify(self, check_mode, run_once: bool = False):
         self.logger.info("Checking current conditions")
@@ -98,6 +100,8 @@ class WindowOpen:
         schedule.every().wednesday.at(morning_time).do(self.check_and_notify, check_mode="morning")
         schedule.every().thursday.at(morning_time).do(self.check_and_notify, check_mode="morning")
         schedule.every().friday.at(morning_time).do(self.check_and_notify, check_mode="morning")
+
+        schedule.every().hour.at(":00").do(write_row, self.source_list)
         self.logger.info("Schedule created")
 
     def run_schedule_loop(self):
