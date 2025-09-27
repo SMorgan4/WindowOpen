@@ -19,10 +19,10 @@ class WindowOpen:
         self.settings = Settings('config.json')
         self.weather_source = open_meteo_source.OpenMeteo(self.settings)
         self.indoor_source = bme280_source.BME280Source(self.settings)
+        self.source_list = [self.indoor_source, self.weather_source]
         self._setup_schedule()
         self.notifier = Notifier(self.indoor_source, self.weather_source)
         self.logger.info("Finished setup")
-        self.source_list = [self.indoor_source, self.weather_source]
 
     def check_and_notify(self, check_mode, run_once: bool = False):
         self.logger.info("Checking current conditions")
