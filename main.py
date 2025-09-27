@@ -13,7 +13,7 @@ class WindowOpen:
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        logging.basicConfig(filename='windowOpen.log', encoding='utf-8', level=logging.INFO,
+        logging.basicConfig(filename='windowOpen.log', encoding='utf-8', level=logging.WARNING,
                             format='%(asctime)s:%(levelname)s:%(funcName)s:%(message)s')
         self.logger.info("Setting up")
         self.settings = Settings('config.json')
