@@ -16,6 +16,7 @@ class Source(ABC):
         self.pressure = 0
         self.dewpoint = 0
         self.daily_high = 0
+        self.irradiance = 0
         self.location_name = None
         self.logger = logging.getLogger(__name__)
         self._state_attributes = self._set_state_attributes(omit=["logger", "state_attributes", "location_name"])

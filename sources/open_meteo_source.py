@@ -33,6 +33,7 @@ class OpenMeteo(source.Source):
                                 params={'latitude': self.latitude,
                                         'longitude': self.longitude,
                                         'daily': "temperature_2m_max",
+                                        'hourly': "direct_normal_irradiance",
                                         'current': "temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,wind_gusts_10m",
                                         'timezone': self.time_zone,
                                         'forcast_days': self.forecast_days,
@@ -45,6 +46,7 @@ class OpenMeteo(source.Source):
             self.humidity = weather['current']['relative_humidity_2m']
             self.wind = weather['current']['wind_speed_10m']
             self.daily_high = weather["daily"]["temperature_2m_max"][0]
+            self.irradiance = weather["hourly"]["direct_normal_irradiance"][0]
         else:
             self.logger.error("Error fetching weather")
             self.logger.error(response.status_code)
