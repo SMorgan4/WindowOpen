@@ -1,5 +1,6 @@
 import requests
 from sources import source
+from datetime import datetime
 
 
 class OpenMeteo(source.Source):
@@ -21,7 +22,8 @@ class OpenMeteo(source.Source):
             f'Temperature: {self.temperature}\n' \
             f'Humidity: {self.humidity}\n' \
             f'Wind: {self.wind}\n'\
-            f'Daily high: {self.daily_high}\n'
+            f'Daily high: {self.daily_high}\n'\
+            f'Solar irradiance:{self.irradiance}\n'
 
     def update(self):
         self._get_weather()
@@ -46,10 +48,14 @@ class OpenMeteo(source.Source):
             self.humidity = weather['current']['relative_humidity_2m']
             self.wind = weather['current']['wind_speed_10m']
             self.daily_high = weather["daily"]["temperature_2m_max"][0]
-            self.irradiance = weather["hourly"]["direct_normal_irradiance"][0]
+            self.irradiance = self.get_param_at_present(weather["hourly"]["direct_normal_irradiance"])
         else:
             self.logger.error("Error fetching weather")
             self.logger.error(response.status_code)
+
+    @staticmethod
+    def get_param_at_present(values: list):
+        return values[datetime.now().hour]
 
     def _get_pollution(self) -> None:
         response = requests.get("https://air-quality-api.open-meteo.com/v1/air-quality?",
