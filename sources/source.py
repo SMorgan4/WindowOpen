@@ -35,11 +35,16 @@ class Source(ABC):
 
     def get_state_dict(self):
         state_dict = {}
-        self.update()
-        for attribute in self._state_attributes:
-            key = self.location_name + "_" + attribute
-            value = getattr(self, attribute)
-            state_dict[key] = value
+        try:
+            self.update()
+            for attribute in self._state_attributes:
+                key = self.location_name + "_" + attribute
+                value = getattr(self, attribute)
+                state_dict[key] = value
+        except SourceUpdateError:
+            for attribute in self._state_attributes:
+                key = self.location_name + "_" + attribute
+                state_dict[key] = None
         return state_dict
 
     def _set_state_attributes(self, omit=None):
@@ -48,3 +53,11 @@ class Source(ABC):
             if name not in omit:
                 names.append(name)
         return names
+
+
+class SourceUpdateError(Exception):
+    """Custom exception raised when a source fails to update"""
+
+    def __init__(self, message="a source failed to update"):
+        self.message = message
+        super().__init__(self.message)

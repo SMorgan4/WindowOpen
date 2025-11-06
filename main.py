@@ -7,6 +7,7 @@ import time
 from notifier import Notifier
 import logging
 from history import write_row
+from sources import source
 
 
 class WindowOpen:
@@ -35,26 +36,30 @@ class WindowOpen:
 
     def should_open(self, check_mode) -> bool:
         """ Checks current conditions. Returns True if windows should be opened"""
-        self.weather_source.update()
-        self.logger.info("Updated indoor source:")
-        self.logger.info(str(self.indoor_source))
-        self.indoor_source.update()
-        self.logger.info("Updated outdoor source:")
-        self.logger.info(str(self.weather_source))
 
-        if check_mode == "morning":
-            if self.weather_source.daily_high < self.settings.forecast_temp_threshold:
-                self.logger.info("Check failed - forecast not hot enough.")
+        try:
+            self.weather_source.update()
+            self.logger.info("Updated indoor source:")
+            self.logger.info(str(self.indoor_source))
+            self.indoor_source.update()
+            self.logger.info("Updated outdoor source:")
+            self.logger.info(str(self.weather_source))
+
+            if check_mode == "morning":
+                if self.weather_source.daily_high < self.settings.forecast_temp_threshold:
+                    self.logger.info("Check failed - forecast not hot enough.")
+                    return False
+            elif check_mode == "evening":
+                if self.indoor_source.temperature <= self.settings.max_desired_indoor_temp:
+                    self.logger.info("Check failed - not hot enough inside")
+                    return False
+            if not self._shared_checks():
+                if check_mode == "evening":
+                    self._reschedule_evening()
                 return False
-        elif check_mode == "evening":
-            if self.indoor_source.temperature <= self.settings.max_desired_indoor_temp:
-                self.logger.info("Check failed - not hot enough inside")
-                return False
-        if not self._shared_checks():
-            if check_mode == "evening":
-                self._reschedule_evening()
+            return True
+        except source.SourceUpdateError:
             return False
-        return True
 
     def _reschedule_evening(self) -> bool:
         """Returns true and reschedules if we are within the re-scheduling window"""
