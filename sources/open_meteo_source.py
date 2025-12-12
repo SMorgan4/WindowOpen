@@ -54,7 +54,7 @@ class OpenMeteo(source.Source):
                 self.logger.error("Error fetching weather")
                 self.logger.error(response.status_code)
                 raise source.SourceUpdateError("could not get OpenMeteo data")
-        except ConnectionError:
+        except requests.exceptions.RequestException:
             self.logger.error("Error Connecting to OpenMeteo")
             raise source.SourceUpdateError("could not get OpenMeteo data")
 
@@ -78,6 +78,6 @@ class OpenMeteo(source.Source):
                 self.logger.error("Error fetching pollution")
                 self.logger.error(response.status_code)
                 raise source.SourceUpdateError("could not get OpenMeteo data")
-        except ConnectionError:
+        except requests.exceptions.RequestException:
             self.logger.error("Error Connecting to OpenMeteo")
             raise source.SourceUpdateError("could not get OpenMeteo data")
